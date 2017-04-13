@@ -15,14 +15,14 @@ LOG = logging.getLogger()
 
 def run_cmd(cmd):
     LOG.debug(cmd)
-    subprocess.check_output(cmd, shell=True)
+    subprocess.check_output(cmd)
 
 
 def task_list(user, src, dst):
     tasks = []
     for host in sys.stdin:
-        cmd = "/usr/bin/scp {} {}@{}:{}".format(src,
-                                                user, host.rstrip('\n'), dst)
+        full_dst = "{}@{}:{}".format(user, host.strip(), dst)
+        cmd = ["/usr/bin/scp", src, full_dst]
         tasks.append(cmd)
     return tasks
 
